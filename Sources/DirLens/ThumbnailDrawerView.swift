@@ -8,7 +8,7 @@ struct ThumbnailDrawerView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 8) {
                     ForEach(Array(state.imageURLs.enumerated()), id: \.offset) { index, url in
-                        ThumbnailCell(url: url, isSelected: index == state.currentIndex)
+                        ThumbnailCell(url: url, isSelected: index == state.currentIndex, refreshTick: state.thumbnailRefreshTick)
                             .id(index)
                             .onTapGesture { state.jump(to: index) }
                     }
@@ -32,6 +32,7 @@ struct ThumbnailDrawerView: View {
 private struct ThumbnailCell: View {
     let url: URL
     let isSelected: Bool
+    let refreshTick: Int
     @State private var image: NSImage?
 
     var body: some View {
@@ -55,7 +56,7 @@ private struct ThumbnailCell: View {
                 .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 3)
         )
         .shadow(color: .black.opacity(isSelected ? 0.25 : 0), radius: 4)
-        .task(id: url) {
+        .task(id: "\(url.path)#\(refreshTick)") {
             image = await ThumbnailCache.shared.thumbnail(for: url)
         }
     }

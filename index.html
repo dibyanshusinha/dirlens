@@ -200,7 +200,7 @@
     <div class="feature">
       <div class="glyph">↻</div>
       <h3>Rotate</h3>
-      <p>Rotate left or right with a click or a keyboard shortcut.</p>
+      <p>Rotate left or right — saves losslessly to the actual file, not just the view.</p>
     </div>
     <div class="feature">
       <div class="glyph">🎞️</div>
@@ -234,6 +234,8 @@
     <div class="warning">
       <strong>About that Gatekeeper warning</strong>
       DirLens is free and distributed without an Apple Developer certificate, so macOS will say it "cannot be opened because Apple cannot check it for malicious software" on first launch. The right-click → Open step above bypasses that — you only need to do it once. Alternatively, run <code>xattr -dr com.apple.quarantine /Applications/DirLens.app</code> in Terminal.
+      <br><br>
+      Folder-access permissions (Desktop, Documents, Downloads, etc.) are a separate, one-time prompt from macOS — once you grant one, it stays granted across DirLens updates.
     </div>
   </section>
 

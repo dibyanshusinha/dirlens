@@ -22,8 +22,15 @@ if [ -f Resources/AppIcon.icns ]; then
   cp Resources/AppIcon.icns "$APP_DIR/Contents/Resources/AppIcon.icns"
 fi
 
-# Ad-hoc sign so Gatekeeper doesn't complain on first launch.
-codesign --force --deep --sign - "$APP_DIR" >/dev/null 2>&1 || true
+# Sign with a stable local identity if one has been set up (see
+# scripts/setup_signing_cert.sh) so macOS keeps remembering folder-access
+# permissions across rebuilds/updates instead of re-prompting every time.
+# Falls back to ad-hoc signing if that hasn't been set up on this machine.
+SIGNING_IDENTITY="DirLens Local Developer"
+if ! security find-identity -v -p codesigning 2>/dev/null | grep -q "$SIGNING_IDENTITY"; then
+  SIGNING_IDENTITY="-"
+fi
+codesign --force --deep --sign "$SIGNING_IDENTITY" "$APP_DIR" >/dev/null 2>&1 || true
 
 VERSION=$(plutil -extract CFBundleShortVersionString raw Resources/Info.plist)
 ZIP_PATH="dist/${APP_NAME}-v${VERSION}.zip"

@@ -11,8 +11,10 @@ final class AppState: ObservableObject {
     @Published var isDrawerVisible: Bool = false
     @Published var currentNSImage: NSImage?
     @Published var isLoading: Bool = false
+    @Published var isRotating: Bool = false
     @Published var errorMessage: String?
     @Published var pendingDeleteURL: URL?
+    @Published var thumbnailRefreshTick: Int = 0
 
     private static let minZoom: CGFloat = 0.2
     private static let maxZoom: CGFloat = 8.0
@@ -84,14 +86,58 @@ final class AppState: ObservableObject {
     }
 
     func rotateLeft() {
-        withAnimation(.easeInOut(duration: 0.2)) {
-            rotationDegrees -= 90
-        }
+        rotate(byDegrees: -90)
     }
 
     func rotateRight() {
+        rotate(byDegrees: 90)
+    }
+
+    /// Rotates the current image both on screen (immediately, for responsiveness)
+    /// and on disk (in the background) so the file itself ends up rotated, not
+    /// just this session's view of it.
+    private func rotate(byDegrees delta: Int) {
+        guard let url = currentURL else { return }
+
         withAnimation(.easeInOut(duration: 0.2)) {
-            rotationDegrees += 90
+            rotationDegrees += Double(delta)
+        }
+        isRotating = true
+
+        let targetIndex = currentIndex
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            let success = ImageRotator.rotate(fileAt: url, byDegrees: delta)
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.isRotating = false
+                guard self.currentIndex == targetIndex else { return }
+
+                if success {
+                    ThumbnailCache.shared.invalidate(url)
+                    self.thumbnailRefreshTick += 1
+                    self.rotationDegrees = 0
+                    self.loadCurrentImage()
+                } else {
+                    self.errorMessage = "Couldn't rotate \(url.lastPathComponent)"
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        self.rotationDegrees -= Double(delta)
+                    }
+                }
+            }
+        }
+    }
+
+    func editInPreview() {
+        guard let url = currentURL else { return }
+        guard let previewURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: "com.apple.Preview") else {
+            errorMessage = "Preview isn't available on this Mac"
+            return
+        }
+        NSWorkspace.shared.open([url], withApplicationAt: previewURL, configuration: NSWorkspace.OpenConfiguration()) { [weak self] _, error in
+            guard let error else { return }
+            DispatchQueue.main.async {
+                self?.errorMessage = "Couldn't open in Preview: \(error.localizedDescription)"
+            }
         }
     }
 

@@ -63,13 +63,24 @@ struct ContentView: View {
                     Image(systemName: "rotate.left")
                 }
                 .keyboardShortcut("[", modifiers: .command)
-                .help("Rotate Left (⌘[)")
+                .disabled(state.currentURL == nil || state.isRotating)
+                .help("Rotate Left — saves to the file (⌘[)")
 
                 Button(action: { state.rotateRight() }) {
                     Image(systemName: "rotate.right")
                 }
                 .keyboardShortcut("]", modifiers: .command)
-                .help("Rotate Right (⌘])")
+                .disabled(state.currentURL == nil || state.isRotating)
+                .help("Rotate Right — saves to the file (⌘])")
+
+                Divider()
+
+                Button(action: { state.editInPreview() }) {
+                    Image(systemName: "pencil")
+                }
+                .keyboardShortcut("e", modifiers: .command)
+                .disabled(state.currentURL == nil)
+                .help("Edit in Preview (⌘E)")
 
                 Divider()
 

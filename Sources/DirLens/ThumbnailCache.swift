@@ -31,4 +31,8 @@ final class ThumbnailCache: @unchecked Sendable {
             }
         }
     }
+
+    func invalidate(_ url: URL) {
+        cache.removeObject(forKey: url as NSURL)
+    }
 }
