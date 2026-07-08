@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DirLens — a free, native image viewer for Mac</title>
 <meta name="description" content="DirLens is a free, native macOS image viewer. Browse every image in a folder, zoom, rotate, and flip through a hideable thumbnail filmstrip.">
+<link rel="icon" type="image/png" sizes="64x64" href="Resources/AppIcon.iconset/icon_32x32@2x.png">
+<link rel="icon" type="image/png" sizes="32x32" href="Resources/AppIcon.iconset/icon_16x16@2x.png">
+<link rel="apple-touch-icon" href="Resources/AppIcon.iconset/icon_128x128@2x.png">
 <style>
   :root {
     color-scheme: light dark;
@@ -234,6 +237,8 @@
     <div class="warning">
       <strong>About that Gatekeeper warning</strong>
       DirLens is free and distributed without an Apple Developer certificate, so macOS will say it "cannot be opened because Apple cannot check it for malicious software" on first launch. The right-click → Open step above bypasses that — you only need to do it once. Alternatively, run <code>xattr -dr com.apple.quarantine /Applications/DirLens.app</code> in Terminal.
+      <br><br>
+      On newer macOS versions, right-click → Open may still show a dialog with only "Move to Trash" and "Done" (no "Open Anyway"). If so, go to <strong>System Settings → Privacy &amp; Security</strong>, scroll down to the message about DirLens, and click <strong>Open Anyway</strong> — then try opening it again.
       <br><br>
       Folder-access permissions (Desktop, Documents, Downloads, etc.) are a separate, one-time prompt from macOS — once you grant one, it stays granted across DirLens updates.
     </div>

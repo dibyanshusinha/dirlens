@@ -15,6 +15,8 @@ DirLens is free and distributed unsigned (no Apple Developer account behind it),
 
 You only need to do this once. After that it opens normally.
 
+On newer macOS versions, right-click → Open may still show a dialog with only "Move to Trash" and "Done" (no "Open Anyway"). If so, go to **System Settings → Privacy & Security**, scroll down to the message about DirLens, and click **Open Anyway** — then try opening it again.
+
 ## Features
 
 - Opens any image and automatically finds every other image (jpg, png, gif, bmp, tiff, heic/heif, webp) in the same folder for browsing.
