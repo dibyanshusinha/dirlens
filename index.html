@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DirLens — a free, native image viewer for Mac</title>
+<meta name="description" content="DirLens is a free, native macOS image viewer. Browse every image in a folder, zoom, rotate, and flip through a hideable thumbnail filmstrip.">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f5f5f7;
+    --surface: #ffffff;
+    --text: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --border: rgba(0,0,0,0.08);
+    --accent-a: #5b9dfb;
+    --accent-b: #7358e0;
+    --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    --code-bg: #f0f0f2;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000000;
+      --surface: #1c1c1e;
+      --text: #f5f5f7;
+      --text-secondary: #98989d;
+      --border: rgba(255,255,255,0.1);
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.4);
+      --code-bg: #2c2c2e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+  }
+  header.hero {
+    text-align: center;
+    padding: 88px 0 40px;
+  }
+  .icon {
+    width: 132px;
+    height: 132px;
+    border-radius: 29px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+  }
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+  .tagline {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    max-width: 520px;
+    margin: 0 auto 36px;
+    line-height: 1.5;
+  }
+  .download-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, var(--accent-a), var(--accent-b));
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 16px 32px;
+    border-radius: 100px;
+    box-shadow: 0 8px 20px rgba(91, 157, 251, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .download-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(91, 157, 251, 0.45);
+  }
+  .download-btn svg { width: 18px; height: 18px; }
+  .meta-line {
+    margin: 18px 0 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+  }
+  .meta-line a { color: inherit; }
+  section.features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 24px 0 64px;
+  }
+  @media (max-width: 620px) {
+    section.features { grid-template-columns: repeat(2, 1fr); }
+  }
+  .feature {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 16px;
+    text-align: center;
+  }
+  .feature .glyph {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+  .feature h3 {
+    font-size: 0.95rem;
+    margin: 0 0 4px;
+    font-weight: 600;
+  }
+  .feature p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.4;
+  }
+  section.install {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 40px;
+  }
+  section.install h2 {
+    font-size: 1.3rem;
+    margin: 0 0 20px;
+  }
+  ol.steps {
+    margin: 0;
+    padding-left: 20px;
+  }
+  ol.steps li {
+    margin-bottom: 10px;
+    line-height: 1.55;
+  }
+  .warning {
+    margin-top: 20px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: var(--code-bg);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .warning strong { display: block; margin-bottom: 6px; }
+  code {
+    background: var(--code-bg);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.88em;
+  }
+  footer {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    padding-top: 8px;
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <img class="icon" src="Resources/AppIcon.iconset/icon_256x256@2x.png" alt="DirLens icon">
+    <h1>DirLens</h1>
+    <p class="tagline">A free, native image viewer for Mac. Open one photo, browse the whole folder, zoom, rotate — the way image viewing used to just work.</p>
+
+    <a class="download-btn" href="https://github.com/dibyanshusinha/dirlens/releases/latest/download/DirLens.zip">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v13"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+      Download for Mac
+    </a>
+    <p class="meta-line">macOS 14 Sonoma or later · Apple Silicon &amp; Intel · Free · <a href="https://github.com/dibyanshusinha/dirlens">View source on GitHub</a></p>
+  </header>
+
+  <section class="features">
+    <div class="feature">
+      <div class="glyph">🗂️</div>
+      <h3>Folder aware</h3>
+      <p>Open any image and browse every other image in the same folder automatically.</p>
+    </div>
+    <div class="feature">
+      <div class="glyph">🔍</div>
+      <h3>Zoom &amp; pan</h3>
+      <p>Pinch to zoom, drag to pan, double-click to reset — smooth and instant.</p>
+    </div>
+    <div class="feature">
+      <div class="glyph">↻</div>
+      <h3>Rotate</h3>
+      <p>Rotate left or right with a click or a keyboard shortcut.</p>
+    </div>
+    <div class="feature">
+      <div class="glyph">🎞️</div>
+      <h3>Thumbnail filmstrip</h3>
+      <p>Hideable bottom drawer with thumbnails of the whole folder. Click to jump.</p>
+    </div>
+    <div class="feature">
+      <div class="glyph">⌨️</div>
+      <h3>Keyboard first</h3>
+      <p>Arrow keys to move, space to toggle the filmstrip, no mouse required.</p>
+    </div>
+    <div class="feature">
+      <div class="glyph">✋</div>
+      <h3>Drag &amp; drop</h3>
+      <p>Drop an image onto the window to open it. No import, no library.</p>
+    </div>
+  </section>
+
+  <section class="install">
+    <h2>Install</h2>
+    <ol class="steps">
+      <li>Download the <code>.zip</code> above and unzip it.</li>
+      <li>Drag <code>DirLens.app</code> into your <code>Applications</code> folder.</li>
+      <li>Right-click (Control-click) <code>DirLens.app</code> and choose <strong>Open</strong>, then confirm <strong>Open</strong> in the dialog.</li>
+    </ol>
+    <div class="warning">
+      <strong>About that Gatekeeper warning</strong>
+      DirLens is free and distributed without an Apple Developer certificate, so macOS will say it "cannot be opened because Apple cannot check it for malicious software" on first launch. The right-click → Open step above bypasses that — you only need to do it once. Alternatively, run <code>xattr -dr com.apple.quarantine /Applications/DirLens.app</code> in Terminal.
+    </div>
+  </section>
+
+  <footer>
+    Built with SwiftUI. <a href="https://github.com/dibyanshusinha/dirlens">Source on GitHub</a> · <a href="https://github.com/dibyanshusinha/dirlens/releases">All releases</a>
+  </footer>
+
+</div>
+</body>
+</html>
