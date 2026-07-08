@@ -2,6 +2,17 @@
 
 A lightweight macOS image viewer in the spirit of the old Windows Photo Viewer: opens one image, lets you page through every other image in the same folder, zoom, rotate, and pull up a hideable thumbnail filmstrip.
 
+## Download
+
+Grab the latest `.zip` from the [Releases page](https://github.com/dibyanshusinha/dirlens/releases), unzip it, and drag `DirLens.app` to `/Applications`.
+
+DirLens is free and distributed unsigned (no Apple Developer account behind it), so **macOS Gatekeeper will block the first launch** with a "cannot be opened because Apple cannot check it for malicious software" message. To open it the first time:
+
+- Right-click (or Control-click) `DirLens.app` → **Open** → **Open** again in the dialog, **or**
+- Run `xattr -dr com.apple.quarantine /Applications/DirLens.app` in Terminal.
+
+You only need to do this once. After that it opens normally.
+
 ## Features
 
 - Opens any image and automatically finds every other image (jpg, png, gif, bmp, tiff, heic/heif, webp) in the same folder for browsing.
