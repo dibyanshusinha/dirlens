@@ -23,6 +23,7 @@ You only need to do this once. After that it opens normally.
 - Rotate left/right (toolbar, `⌘[` / `⌘]`).
 - Hidden bottom drawer with thumbnails of every image in the folder — toggle with the toolbar button or `Space`. Click a thumbnail to jump straight to it.
 - Drag-and-drop an image onto the window to open it.
+- Delete the current image (toolbar or `⌘⌫`) — moves it to the Trash after confirmation, it's not permanently deleted.
 
 ## Run it during development
 
@@ -62,6 +63,7 @@ cp -R "dist/DirLens.app" /Applications/
 | Rotate left / right | `⌘[` / `⌘]` |
 | Toggle thumbnail drawer | `Space` |
 | Reset zoom (double-click image) | double-click |
+| Move image to Trash | `⌘⌫` |
 
 ## Project layout
 
@@ -78,3 +80,7 @@ Sources/DirLens/
 Resources/Info.plist          – app bundle metadata, registers as an image viewer
 build_app.sh                   – packages a release build into DirLens.app
 ```
+
+## License
+
+[MIT](LICENSE)

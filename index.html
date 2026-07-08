@@ -122,6 +122,11 @@
     margin: 0;
     line-height: 1.4;
   }
+  .feature:last-child {
+    grid-column: 1 / -1;
+    max-width: 260px;
+    margin: 0 auto;
+  }
   section.install {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -212,6 +217,11 @@
       <h3>Drag &amp; drop</h3>
       <p>Drop an image onto the window to open it. No import, no library.</p>
     </div>
+    <div class="feature">
+      <div class="glyph">🗑️</div>
+      <h3>Move to Trash</h3>
+      <p>Delete the current image straight from the viewer — safely, via the Trash, with a confirmation first.</p>
+    </div>
   </section>
 
   <section class="install">
@@ -228,7 +238,7 @@
   </section>
 
   <footer>
-    Built with SwiftUI. <a href="https://github.com/dibyanshusinha/dirlens">Source on GitHub</a> · <a href="https://github.com/dibyanshusinha/dirlens/releases">All releases</a>
+    Built with SwiftUI. <a href="https://github.com/dibyanshusinha/dirlens">Source on GitHub</a> · <a href="https://github.com/dibyanshusinha/dirlens/releases">All releases</a> · <a href="https://github.com/dibyanshusinha/dirlens/blob/main/LICENSE">MIT License</a>
   </footer>
 
 </div>

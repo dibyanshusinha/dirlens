@@ -12,6 +12,7 @@ final class AppState: ObservableObject {
     @Published var currentNSImage: NSImage?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    @Published var pendingDeleteURL: URL?
 
     private static let minZoom: CGFloat = 0.2
     private static let maxZoom: CGFloat = 8.0
@@ -97,6 +98,38 @@ final class AppState: ObservableObject {
     func toggleDrawer() {
         withAnimation(.easeInOut(duration: 0.2)) {
             isDrawerVisible.toggle()
+        }
+    }
+
+    func requestDelete() {
+        guard let url = currentURL else { return }
+        pendingDeleteURL = url
+    }
+
+    func cancelDelete() {
+        pendingDeleteURL = nil
+    }
+
+    func confirmDelete() {
+        guard let url = pendingDeleteURL else { return }
+        pendingDeleteURL = nil
+
+        do {
+            try FileManager.default.trashItem(at: url, resultingItemURL: nil)
+        } catch {
+            errorMessage = "Couldn't move \(url.lastPathComponent) to Trash"
+            return
+        }
+
+        guard let removedIndex = imageURLs.firstIndex(of: url) else { return }
+        imageURLs.remove(at: removedIndex)
+        if imageURLs.isEmpty {
+            currentIndex = 0
+            currentNSImage = nil
+        } else {
+            currentIndex = min(removedIndex, imageURLs.count - 1)
+            resetTransform()
+            loadCurrentImage()
         }
     }
 

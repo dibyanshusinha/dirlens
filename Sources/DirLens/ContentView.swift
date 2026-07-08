@@ -78,9 +78,28 @@ struct ContentView: View {
                 }
                 .keyboardShortcut(.space, modifiers: [])
                 .help("Toggle Thumbnails (Space)")
+
+                Divider()
+
+                Button(role: .destructive, action: { state.requestDelete() }) {
+                    Image(systemName: "trash")
+                }
+                .keyboardShortcut(.delete, modifiers: .command)
+                .disabled(state.currentURL == nil)
+                .help("Move to Trash (⌘⌫)")
             }
         }
         .navigationTitle(state.currentURL?.lastPathComponent ?? "DirLens")
         .navigationSubtitle(state.imageURLs.isEmpty ? "" : "\(state.currentIndex + 1) of \(state.imageURLs.count)")
+        .alert(
+            "Move “\(state.pendingDeleteURL?.lastPathComponent ?? "")” to Trash?",
+            isPresented: Binding(
+                get: { state.pendingDeleteURL != nil },
+                set: { if !$0 { state.cancelDelete() } }
+            )
+        ) {
+            Button("Cancel", role: .cancel) { state.cancelDelete() }
+            Button("Move to Trash", role: .destructive) { state.confirmDelete() }
+        }
     }
 }
